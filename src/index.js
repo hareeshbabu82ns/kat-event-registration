@@ -1,13 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { ThemeProvider, theme } from '@chakra-ui/core';
+import { ThemeProvider, theme, CSSReset, ColorModeProvider } from '@chakra-ui/core';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const customTheme = {
+  ...theme,
+  colors: {
+    ...theme.colors,
+    current: 'dark',
+  }
+}
+// console.log(theme)
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={customTheme}>
+      <CSSReset />
+      <ColorModeProvider>
+        <App />
+      </ColorModeProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
