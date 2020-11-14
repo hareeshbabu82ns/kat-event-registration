@@ -1,28 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider, theme, CSSReset, ColorModeProvider } from '@chakra-ui/core';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import './index.css';
 import 'semantic-ui-css/semantic.min.css'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ColorModeScript } from "@chakra-ui/react"
 
-const customTheme = {
-  ...theme,
+const customTheme = extendTheme({
+  config: {
+    useSystemColorMode: false,
+    initialColorMode: "dark",
+  },
   colors: {
-    ...theme.colors,
-    current: 'dark',
+    brand: {
+      "a400": "#050c14",
+      "a300": "#091523",
+      "a200": "#0e1e33",
+      "a100": "#132844",
+      900: "#1a365d",
+      800: "#153e75",
+      700: "#2a69ac",
+    },
   }
-}
+})
 // console.log(theme)
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={customTheme}>
-      <CSSReset />
-      <ColorModeProvider>
-        <App />
-      </ColorModeProvider>
-    </ThemeProvider>
+    <ChakraProvider theme={customTheme} resetCSS>
+      <ColorModeScript initialColorMode="dark" />
+      <App />
+    </ChakraProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
