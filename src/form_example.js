@@ -2,13 +2,19 @@ import React, { useState } from 'react'
 import {
   Button,
   Checkbox,
-  Form,
+  FormLabel,
+  FormControl,
   Input,
   Radio,
+  RadioGroup,
   Select,
-  TextArea,
-} from 'semantic-ui-react'
+  Textarea,
+  HStack,
+  Stack,
+} from '@chakra-ui/react'
 import { useColorMode } from '@chakra-ui/react'
+
+import DropdownSelect from './components/DropdownSelect'
 
 const options = [
   { key: 'm', text: 'Male', value: 'male' },
@@ -17,67 +23,67 @@ const options = [
 ]
 
 const FormExampleFieldControl = () => {
-  const [state, setState] = useState({ value: '' })
+  const [state, setState] = useState({ quantity: '2', gender: 'other' })
   const { colorMode } = useColorMode()
 
-  const handleChange = (e, { value }) => setState({ value })
-  const { value } = state
+  const handleQuantityChange = (quantity) => setState({ ...state, quantity })
+  const handleGenderChange = (e) => setState({ ...state, gender: e.target.value })
 
   return (
-    <Form inverted={colorMode === 'dark'}>
-      <Form.Group widths='equal'>
-        <Form.Field
-          control={Input}
-          label='First name'
-          placeholder='First name'
-        />
-        <Form.Field
-          control={Input}
-          label='Last name'
-          placeholder='Last name'
-        />
-        <Form.Field
-          control={Select}
-          label='Gender'
-          options={options}
-          placeholder='Gender'
-        />
-      </Form.Group>
-      <Form.Group inline>
-        <label>Quantity</label>
-        <Form.Field
-          control={Radio}
-          label='One'
-          value='1'
-          checked={value === '1'}
-          onChange={handleChange}
-        />
-        <Form.Field
-          control={Radio}
-          label='Two'
-          value='2'
-          checked={value === '2'}
-          onChange={handleChange}
-        />
-        <Form.Field
-          control={Radio}
-          label='Three'
-          value='3'
-          checked={value === '3'}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      <Form.Field
-        control={TextArea}
-        label='About'
-        placeholder='Tell us more about you...'
-      />
-      <Form.Field
-        control={Checkbox}
-        label='I agree to the Terms and Conditions'
-      />
-      <Form.Field control={Button}>Submit</Form.Field>
-    </Form>
+    <Stack as='form' spacing='3'
+      onSubmit={(e) => { console.log(state); e.preventDefault() }}>
+
+      <Stack direction={{ base: "column", md: "row" }} spacing="2">
+        <FormControl id="firstName" isRequired>
+          <FormLabel>First name</FormLabel>
+          <Input type="text" placeholder='First name' />
+        </FormControl>
+
+        <FormControl id="lastName">
+          <FormLabel>Last Name</FormLabel>
+          <Input type="text" placeholder='Last name' />
+        </FormControl>
+
+        <FormControl id="gender" >
+          <FormLabel>Gender</FormLabel>
+          <Select placeholder='Gender' value={state.gender} isReadOnly
+            onChange={handleGenderChange}>
+            {options && options.map(option =>
+              (<option key={option.key} value={option.value}>{option.text}</option>))}
+          </Select>
+        </FormControl>
+      </Stack>
+
+      <FormControl id="genderSelect">
+        <DropdownSelect items={options} />
+      </FormControl>
+
+      <FormControl as='fieldset'>
+        <HStack>
+          <FormLabel as='legend'>Quantity</FormLabel>
+          <RadioGroup
+            value={state.quantity} onChange={handleQuantityChange}>
+            <HStack spacing="24px">
+              <Radio value="1">One</Radio>
+              <Radio value="2">Two</Radio>
+              <Radio value="3">Three</Radio>
+            </HStack>
+          </RadioGroup>
+        </HStack>
+      </FormControl>
+
+      <FormControl id="about">
+        <FormLabel>About</FormLabel>
+        <Textarea placeholder='Tell us more about you...' />
+      </FormControl>
+
+      <FormControl id="agree">
+        <Checkbox colorScheme='red'>I agree to the Terms and Conditions</Checkbox>
+      </FormControl>
+
+      <Button type='submit' colorScheme='teal'>Submit</Button>
+
+    </Stack>
   )
 }
 

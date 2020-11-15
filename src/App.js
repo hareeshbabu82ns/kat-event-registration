@@ -1,8 +1,10 @@
-import { Box, Image, useColorModeValue } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
 import NavBar, { NAV_BAR_HEIGHT } from './NavBar'
 import FormExample from './form_example'
 import SkipNavLink from './utils/SkipNavLink'
 import SkipNavContent from './utils/SkipNavContent'
+import ExAddCard from './examples/AddCard'
+import ExAirbnbCard from './examples/AirbnbCard'
 
 function App() {
   return (
@@ -11,16 +13,12 @@ function App() {
       <NavBar />
       <div style={{ flex: 1 }}>
         <SkipNavContent />
-        <Box mt={NAV_BAR_HEIGHT} p={4} display={{ md: "flex" }} bg={useColorModeValue("gray.200", "gray.800")}>
+        <Box mt={NAV_BAR_HEIGHT} p={4} display={{ md: "flex" }}>
           <Box flexShrink="0">
-            <Image
-              rounded="lg"
-              width={{ md: 250 }}
-              src="https://bit.ly/2jYM25F"
-              alt="Woman paying for a purchase"
-            />
+            <ExAddCard />
+            <ExAirbnbCard />
           </Box>
-          <Box mt={{ base: 8, md: 0 }} ml={{ md: 8 }}>
+          <Box flexGrow='1' mt={{ base: 8, md: 0 }} ml={{ md: 8 }}>
             <FormExample />
           </Box>
         </Box>
