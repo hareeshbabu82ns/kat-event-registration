@@ -6,6 +6,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ColorModeScript } from "@chakra-ui/react"
 
+const mode = (light, dark) =>
+  (props) => props.colorMode === 'dark' ? dark : light
+
 const customTheme = extendTheme({
   config: {
     useSystemColorMode: false,
@@ -21,9 +24,31 @@ const customTheme = extendTheme({
       800: "#153e75",
       700: "#2a69ac",
     },
+  },
+  styles: {
+    global: (props) => {
+      const bg = mode('white', 'gray.800')(props)
+      const color = mode("gray.800", "whiteAlpha.900")(props)
+      const bgHover = mode("gray.400", "whiteAlpha.400")(props)
+
+      return {
+        ".rdate-picker": {
+          color: mode("gray.800", "whiteAlpha.900")(props),
+          '.react-datepicker, .react-datepicker__header, .react-datepicker__time': {
+            bg
+          },
+          '.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__current-month, .react-datepicker-time__header, .react-datepicker-year-header, .react-datepicker__time': {
+            color
+          },
+          '.react-datepicker__day:hover, .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item:hover': {
+            bg: bgHover
+          },
+        }
+      }
+    }
   }
 })
-// console.log(theme)
+// console.log(customTheme)
 
 ReactDOM.render(
   <React.StrictMode>

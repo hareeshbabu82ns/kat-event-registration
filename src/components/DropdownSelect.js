@@ -13,6 +13,7 @@ import {
   List,
   ListItem,
   useStyleConfig, omitThemingProps,
+  Popover, PopoverTrigger, PopoverContent, PopoverBody,
 } from '@chakra-ui/react'
 
 import { ChevronDownIcon } from '@chakra-ui/icons'
@@ -23,14 +24,14 @@ const SelectInput = forwardRef(({ ...props }, ref) => {
 const SelectMenu = forwardRef((props, ref) => {
   const styles = useStyleConfig("Select", props)
   // const { id = fallbackId, ...rest } = omitThemingProps(props)
-  return <chakra.div  {...props} ref={ref} __css={styles} borderColor='teal.200' position='absolute' zIndex='50' />;
+  return <chakra.div  {...props} ref={ref} __css={styles} borderColor='teal.200' />;
 });
 
 const SelectMenuList = forwardRef(({ isOpen, ...props }, ref) => {
   const styles = useStyleConfig("MenuList", props)
 
   return <List display={isOpen ? 'flex' : "none"}
-    zIndex="100" w='full' flexDir='column'
+    w='full' flexDir='column'
     {...props} ref={ref} __css={styles} bg='teal.800' />;
 });
 
@@ -76,28 +77,32 @@ const DropdownSelect = ({ items }) => {
   })
 
   return (
-    <>
+    <Popover isOpen={isOpen} placement="bottom-end" closeOnEsc={true}>
       <FormLabel {...getLabelProps()}>Choose an element:</FormLabel>
-      <Button {...getToggleButtonProps()} aria-label={'toggle menu'} type='button' w='full' variant='outline'>
-        {selectedItem?.text || 'Gender'} <Spacer /><ChevronDownIcon />
-      </Button>
-      <SelectMenu {...getMenuProps()}>
+      <PopoverTrigger>
+        <Button {...getToggleButtonProps()} aria-label={'toggle menu'} type='button' w='full' variant='outline'>
+          {selectedItem?.text || 'Gender'} <Spacer /><ChevronDownIcon />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <SelectMenu {...getMenuProps()}>
 
-        <SelectMenuList isOpen={isOpen}>
-          {items.map((item, index) => (
-            <SelectMenuItem
-              key={`${item.key}${index}`}
-              itemIndex={index}
-              highlightedIndex={highlightedIndex}
-              {...getItemProps({ item: item.value, index })}
-            >
-              {item.text}
-            </SelectMenuItem>
-          ))}
-        </SelectMenuList>
+          <SelectMenuList isOpen={isOpen}>
+            {items.map((item, index) => (
+              <SelectMenuItem
+                key={`${item.key}${index}`}
+                itemIndex={index}
+                highlightedIndex={highlightedIndex}
+                {...getItemProps({ item: item.value, index })}
+              >
+                {item.text}
+              </SelectMenuItem>
+            ))}
+          </SelectMenuList>
 
-      </SelectMenu>
-    </>
+        </SelectMenu>
+      </PopoverContent>
+    </Popover>
   )
 }
 export default DropdownSelect

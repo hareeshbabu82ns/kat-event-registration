@@ -12,22 +12,35 @@ import {
   HStack,
   Stack,
 } from '@chakra-ui/react'
-import { useColorMode } from '@chakra-ui/react'
+// import { useColorMode } from '@chakra-ui/react'
 
-import DropdownSelect from './components/DropdownSelect'
+// import DropdownSelect from './components/DropdownSelect'
+// import ComboboxSelect from './components/ComboboxSelect'
+import ReactSelect from './components/ReactSelect'
+import ReactDatePicker from './components/ReactDatePicker'
 
+
+// const options = [
+//   { key: 'm', text: 'Male', value: 'male' },
+//   { key: 'f', text: 'Female', value: 'female' },
+//   { key: 'o', text: 'Other', value: 'other' },
+// ]
 const options = [
-  { key: 'm', text: 'Male', value: 'male' },
-  { key: 'f', text: 'Female', value: 'female' },
-  { key: 'o', text: 'Other', value: 'other' },
+  { key: 'm', text: 'Male', value: 'male', label: 'Male' },
+  { key: 'f', text: 'Female', value: 'female', label: 'Female' },
+  { key: 'o', text: 'Other', value: 'other', label: 'Other' },
 ]
+// const options = Array(10).fill('').map((_, index) => ({ key: `${index}`, text: `Item ${index}`, value: `item_${index}`, label: `Item ${index}` }))
+
 
 const FormExampleFieldControl = () => {
-  const [state, setState] = useState({ quantity: '2', gender: 'other' })
-  const { colorMode } = useColorMode()
+  const [state, setState] = useState({ quantity: '2', gender: 'other', dob: new Date() })
+  // const { colorMode } = useColorMode()
 
   const handleQuantityChange = (quantity) => setState({ ...state, quantity })
   const handleGenderChange = (e) => setState({ ...state, gender: e.target.value })
+  const handleRGenderChange = (d) => setState({ ...state, gender: d.value })
+  const handleDobChange = (d) => setState({ ...state, dob: d })
 
   return (
     <Stack as='form' spacing='3'
@@ -53,10 +66,19 @@ const FormExampleFieldControl = () => {
           </Select>
         </FormControl>
       </Stack>
-
-      <FormControl id="genderSelect">
-        <DropdownSelect items={options} />
-      </FormControl>
+      <Stack direction={{ base: "column", md: "row" }} spacing="2">
+        <FormControl id="genderRSelect">
+          <FormLabel>Gender</FormLabel>
+          <ReactSelect options={options} value={options.find((el) => (el.value === state.gender))} onChange={handleRGenderChange} />
+        </FormControl>
+        <FormControl id="dob">
+          <FormLabel>Date Of Birth</FormLabel>
+          <ReactDatePicker selected={state.dob}
+            showTimeSelect
+            dateFormat="MM/dd/yyyy HH:mm"
+            onChange={handleDobChange} />
+        </FormControl>
+      </Stack>
 
       <FormControl as='fieldset'>
         <HStack>
