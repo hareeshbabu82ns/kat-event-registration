@@ -8,8 +8,9 @@ import { MoonIcon } from '@chakra-ui/icons'
 
 import RSelect from 'react-select'
 
-const Select = ({ options, ...props }) => {
+const Select = ({ options, isInvalid, ...props }) => {
 
+  // console.log(props)
   const { field: controlStyles,
     // ...rest
   } = useStyleConfig("Select", {})
@@ -17,7 +18,7 @@ const Select = ({ options, ...props }) => {
   // const customTheme = mergeWith(theme, { components })
 
   const customControlStyles = {
-    borderColor: useToken('colors', controlStyles.borderColor),
+    borderColor: useToken('colors', isInvalid ? 'red.300' : controlStyles.borderColor),
     height: useToken('sizes', controlStyles.h),
     paddingLeft: useToken('space', '2'),
     paddingRight: useToken('space', controlStyles.px),

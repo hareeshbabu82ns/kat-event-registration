@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react"
 import NavBar, { NAV_BAR_HEIGHT } from './NavBar'
-import FormExample from './form_example'
+import FormExample from './examples/form-hook-example'
+// import FormExample from './examples/form-example'
 import SkipNavLink from './utils/SkipNavLink'
 import SkipNavContent from './utils/SkipNavContent'
 import ExAddCard from './examples/AddCard'

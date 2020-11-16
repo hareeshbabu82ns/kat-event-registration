@@ -16,8 +16,8 @@ import {
 
 // import DropdownSelect from './components/DropdownSelect'
 // import ComboboxSelect from './components/ComboboxSelect'
-import ReactSelect from './components/ReactSelect'
-import ReactDatePicker from './components/ReactDatePicker'
+import ReactSelect from '../components/ReactSelect'
+import ReactDatePicker from '../components/ReactDatePicker'
 
 
 // const options = [
