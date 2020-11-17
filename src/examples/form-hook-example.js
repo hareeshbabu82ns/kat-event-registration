@@ -8,14 +8,11 @@ import { RadioGroup, Radio, ALIGN } from "baseui/radio";
 import { Textarea } from "baseui/textarea";
 import { Checkbox, LABEL_PLACEMENT } from "baseui/checkbox";
 import { Button, KIND } from "baseui/button";
+import { FlexGrid, FlexGridItem } from 'baseui/flex-grid';
 
 import { DatePicker } from 'baseui/datepicker';
 import { TimePicker } from 'baseui/timepicker';
 
-import {
-  Stack,
-  useToast,
-} from '@chakra-ui/react'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -38,7 +35,6 @@ const schema = yup.object().shape({
 });
 
 const FormExampleFieldControl = () => {
-  const toast = useToast()
   const [css, theme] = useStyletron()
 
   const defaultValues = {
@@ -73,156 +69,185 @@ const FormExampleFieldControl = () => {
   const onSubmit = (data) => { console.log(data); }
 
   return (
-    <Stack as='form' spacing='3'
+    <form
       onSubmit={handleSubmit(onSubmit)}>
-
-      <Stack direction={{ base: "column", md: "row" }} spacing="2">
-        <FormControl id="firstName"
-          error={errors?.firstName?.message}
-          label={() => 'First Name'}>
-          <Input placeholder='First name'
-            name='firstName' inputRef={register} />
-        </FormControl>
-
-        <FormControl id="lastName"
-          error={errors?.lastName?.message}
-          label={() => 'Last Name'}>
-          <Input placeholder='Last name'
-            name='lastName' inputRef={register} />
-        </FormControl>
-
-        <FormControl id="gender"
-          error={errors?.gender?.message}
-          label={() => 'Gender'}>
-          <Controller
-            name="gender" control={control}
-            render={({ onChange, value }) => (
-              <Select
-                value={value}
+      <FlexGrid flexGridColumnCount={1}
+        flexGridColumnGap="scale800">
+        <FlexGridItem>
+          <FlexGrid
+            flexGridColumnCount={[1, 1, 3]} flexGridColumnGap="scale800">
+            <FlexGridItem>
+              <FormControl id="firstName"
+                error={errors?.firstName?.message}
+                label={() => 'First Name'}>
+                <Input placeholder='First name'
+                  name='firstName' inputRef={register} />
+              </FormControl>
+            </FlexGridItem>
+            <FlexGridItem>
+              <FormControl id="lastName"
+                error={errors?.lastName?.message}
+                label={() => 'Last Name'}>
+                <Input placeholder='Last name'
+                  name='lastName' inputRef={register} />
+              </FormControl>
+            </FlexGridItem>
+            <FlexGridItem>
+              <FormControl id="gender"
                 error={errors?.gender?.message}
-                onChange={({ value }) => onChange(value)}
-                options={options}
-                labelKey='label' valueKey='value'
-              />
-            )}
-          />
-        </FormControl>
-      </Stack>
-      <Stack direction={{ base: "column", md: "row" }} spacing="2">
-        <FormControl id="dob" label="Date of Birth">
-          <Controller
-            name="dob" control={control}
-            render={({ onChange, value }) => (
-              <DatePicker
-                value={value}
-                timeSelectStart
-                formatString="MM/dd/yyyy HH:mm"
-                onChange={({ date }) => onChange(date)}
-                overrides={{
-                  CalendarHeader: {
-                    style: ({ $theme }) => ({
-                      backgroundColor: $theme.colors.positive,
-                    })
-                  },
-                  MonthHeader: {
-                    style: ({ $theme }) => ({
-                      backgroundColor: $theme.colors.positive,
-                    }),
-                  },
-                  MonthYearSelectButton: {
-                    style: ({ $theme }) => ({
-                      ':focus': {
-                        backgroundColor: $theme.colors.positive500,
-                        outline: 'none',
-                      },
-                    }),
-                  },
-                  Day: {
-                    style: ({
-                      $theme,
-                      $selected,
-                      $isHovered,
-                      $isHighlighted,
-                    }) => ({
-                      color: $selected
-                        ? $theme.colors.white
-                        : $theme.colors.calendarForeground,
-                      ':after': {
-                        backgroundColor: $selected
-                          ? $isHovered || $isHighlighted
-                            ? $theme.colors.positive500
-                            : $theme.colors.positive
-                          : $isHovered || $isHighlighted
-                            ? $theme.colors.positive200
-                            : 'transparent',
-                      },
-                    }),
-                  },
-                }}
-              />
-            )}
-          />
-        </FormControl>
-        <FormControl id="dob" label="Date of Birth">
-          <Controller
-            name="dob" control={control}
-            render={({ onChange, value }) => (
-              <TimePicker
-                value={value}
-                format="HH:mm"
-                onChange={onChange}
-              />
-            )}
-          />
-        </FormControl>
-      </Stack>
-
-      <FormControl id='legend' label="Legends">
-        <Controller
-          name="legend" control={control}
-          render={({ onChange, value }) => (
-            <RadioGroup
-              value={value}
-              onChange={e => onChange(e.target.value)}
-              align={ALIGN.horizontal}
-            >
-              <Radio value="1">One</Radio>
-              <Radio value="2">Two</Radio>
-              <Radio value="3">Three</Radio>
-            </RadioGroup>
-          )}
-        />
-      </FormControl>
-
-      <FormControl id="about" label="About">
-        <Controller
-          name='about' control={control}
-          render={({ onChange, value }) => (
-            <Textarea
-              value={value}
-              onChange={e => onChange(e.target.value)}
-              placeholder='Tell us more about you...'
+                label={() => 'Gender'}>
+                <Controller
+                  name="gender" control={control}
+                  render={({ onChange, value }) => (
+                    <Select
+                      value={value}
+                      error={errors?.gender?.message}
+                      onChange={({ value }) => onChange(value)}
+                      options={options}
+                      labelKey='label' valueKey='value'
+                    />
+                  )}
+                />
+              </FormControl>
+            </FlexGridItem>
+          </FlexGrid>
+        </FlexGridItem>
+        <FlexGridItem>
+          <FlexGrid flexGridColumnCount={[1, 1, 2]} flexGridColumnGap="scale800">
+            <FlexGridItem>
+              <FormControl id="dob" label="Date of Birth">
+                <Controller
+                  name="dob" control={control}
+                  render={({ onChange, value }) => (
+                    <DatePicker
+                      value={value}
+                      timeSelectStart
+                      formatString="MM/dd/yyyy HH:mm"
+                      onChange={({ date }) => onChange(date)}
+                      overrides={{
+                        CalendarHeader: {
+                          style: ({ $theme }) => ({
+                            backgroundColor: $theme.colors.positive,
+                          })
+                        },
+                        MonthHeader: {
+                          style: ({ $theme }) => ({
+                            backgroundColor: $theme.colors.positive,
+                          }),
+                        },
+                        MonthYearSelectButton: {
+                          style: ({ $theme }) => ({
+                            ':focus': {
+                              backgroundColor: $theme.colors.positive500,
+                              outline: 'none',
+                            },
+                          }),
+                        },
+                        Day: {
+                          style: ({
+                            $theme,
+                            $selected,
+                            $isHovered,
+                            $isHighlighted,
+                          }) => ({
+                            color: $selected
+                              ? $theme.colors.white
+                              : $theme.colors.calendarForeground,
+                            ':after': {
+                              backgroundColor: $selected
+                                ? $isHovered || $isHighlighted
+                                  ? $theme.colors.positive500
+                                  : $theme.colors.positive
+                                : $isHovered || $isHighlighted
+                                  ? $theme.colors.positive200
+                                  : 'transparent',
+                            },
+                          }),
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </FormControl>
+            </FlexGridItem>
+            <FlexGridItem>
+              <FormControl id="dob" label="Date of Birth (Time)">
+                <Controller
+                  name="dob" control={control}
+                  render={({ onChange, value }) => (
+                    <TimePicker
+                      value={value}
+                      format="HH:mm"
+                      onChange={onChange}
+                    />
+                  )}
+                />
+              </FormControl>
+            </FlexGridItem>
+          </FlexGrid>
+        </FlexGridItem>
+        <FlexGridItem>
+          <FormControl id='legend' label="Legends">
+            <Controller
+              name="legend" control={control}
+              render={({ onChange, value }) => (
+                <RadioGroup
+                  value={value}
+                  onChange={e => onChange(e.target.value)}
+                  align={ALIGN.horizontal}
+                >
+                  <Radio value="1">One</Radio>
+                  <Radio value="2">Two</Radio>
+                  <Radio value="3">Three</Radio>
+                </RadioGroup>
+              )}
             />
-          )}
-        />
-      </FormControl>
-
-      <FormControl id="agree" isRequired>
-        <Controller
-          name='agree' control={control}
-          render={({ onChange, value }) => (
-            <Checkbox
-              checked={value}
-              onChange={e => onChange(e.target.checked)}
-              labelPlacement={LABEL_PLACEMENT.right}>
-              I agree to the Terms and Conditions</Checkbox>
-          )}
-        />
-      </FormControl>
-
-      <Button kind={KIND.primary} type='submit' >Submit</Button>
-
-    </Stack>
+          </FormControl>
+        </FlexGridItem>
+        <FlexGridItem>
+          <FormControl id="about" label="About">
+            <Controller
+              name='about' control={control}
+              render={({ onChange, value }) => (
+                <Textarea
+                  value={value}
+                  onChange={e => onChange(e.target.value)}
+                  placeholder='Tell us more about you...'
+                />
+              )}
+            />
+          </FormControl>
+        </FlexGridItem>
+        <FlexGridItem>
+          <FormControl id="agree" isRequired>
+            <Controller
+              name='agree' control={control}
+              render={({ onChange, value }) => (
+                <Checkbox
+                  checked={value}
+                  onChange={e => onChange(e.target.checked)}
+                  labelPlacement={LABEL_PLACEMENT.right}>
+                  I agree to the Terms and Conditions</Checkbox>
+              )}
+            />
+          </FormControl>
+        </FlexGridItem>
+        <FlexGridItem>
+          <Button kind={KIND.primary} type='submit'
+            overrides={{
+              BaseButton: {
+                style: ({ $theme }) => {
+                  return {
+                    // outline: `${$theme.colors.primaryB} solid`,
+                    backgroundColor: $theme.colors.backgroundInversePrimary
+                  };
+                }
+              }
+            }}
+          >Submit</Button>
+        </FlexGridItem>
+      </FlexGrid>
+    </form>
   )
 }
 

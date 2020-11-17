@@ -21,6 +21,7 @@ const THEME = {
 }
 const primitives = {
   primaryFontFamily: 'Roboto',
+
 }
 const overrides = {
   typography: {
@@ -36,6 +37,7 @@ const lightTheme = createTheme(primitives, overrides);
 
 const AppBase = (props) => {
   const currentTheme = useRecoilValue(themeMode)
+  console.log(darkTheme)
   return (
     <StyletronProvider value={engine}>
       <BaseProvider
