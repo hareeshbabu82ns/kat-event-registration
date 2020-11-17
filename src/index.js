@@ -1,61 +1,56 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import './index.css';
 import App from './App';
+
+import {
+  BaseProvider, styled,
+  createTheme, createDarkTheme
+} from 'baseui';
+import { Client as Styletron } from 'styletron-engine-atomic';
+import { Provider as StyletronProvider } from 'styletron-react';
+import { RecoilRoot, useRecoilValue } from 'recoil';
+import { themeMode } from './state/globals'
 import reportWebVitals from './reportWebVitals';
-import { ColorModeScript } from "@chakra-ui/react"
 
-const mode = (light, dark) =>
-  (props) => props.colorMode === 'dark' ? dark : light
+const engine = new Styletron()
 
-const customTheme = extendTheme({
-  config: {
-    useSystemColorMode: false,
-    initialColorMode: "dark",
-  },
-  colors: {
-    brand: {
-      "a400": "#050c14",
-      "a300": "#091523",
-      "a200": "#0e1e33",
-      "a100": "#132844",
-      900: "#1a365d",
-      800: "#153e75",
-      700: "#2a69ac",
+const THEME = {
+  light: 'light',
+  dark: 'dark',
+}
+const primitives = {
+  primaryFontFamily: 'Roboto',
+}
+const overrides = {
+  typography: {
+    DisplayLarge: {
+      fontFamily: 'Georgia',
     },
   },
-  styles: {
-    global: (props) => {
-      const bg = mode('white', 'gray.800')(props)
-      const color = mode("gray.800", "whiteAlpha.900")(props)
-      const bgHover = mode("gray.400", "whiteAlpha.400")(props)
+}
 
-      return {
-        ".rdate-picker": {
-          color: mode("gray.800", "whiteAlpha.900")(props),
-          '.react-datepicker, .react-datepicker__header, .react-datepicker__time': {
-            bg
-          },
-          '.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__current-month, .react-datepicker-time__header, .react-datepicker-year-header, .react-datepicker__time': {
-            color
-          },
-          '.react-datepicker__day:hover, .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item:hover': {
-            bg: bgHover
-          },
-        }
-      }
-    }
-  }
-})
-// console.log(customTheme)
+const darkTheme = createDarkTheme(primitives, overrides);
+const lightTheme = createTheme(primitives, overrides);
+
+
+const AppBase = (props) => {
+  const currentTheme = useRecoilValue(themeMode)
+  return (
+    <StyletronProvider value={engine}>
+      <BaseProvider
+        theme={currentTheme === THEME.light ? lightTheme : darkTheme}>
+        <App />
+      </BaseProvider>
+    </StyletronProvider>
+  )
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <ChakraProvider theme={customTheme} resetCSS>
-      <ColorModeScript initialColorMode="dark" />
-      <App />
-    </ChakraProvider>
+    <RecoilRoot>
+      <AppBase />
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')
 );

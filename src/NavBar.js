@@ -3,14 +3,17 @@ import {
   Box, Heading, Flex, Button, IconButton, useColorMode,
   chakra, useColorModeValue,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { Show, Hide } from 'baseui/icon'
+import { useRecoilState } from 'recoil'
 
 import NavLink from './components/NavLink'
+
+import { themeMode } from './state/globals'
 
 const NavBarContent = props => {
   const [show, setShow] = React.useState(false);
   const handleToggle = () => setShow(!show);
-  const { toggleColorMode } = useColorMode()
+  const [currentTheme, setCurrentTheme] = useRecoilState(themeMode)
 
   return (
     <Flex
@@ -56,8 +59,10 @@ const NavBarContent = props => {
         display={{ base: show ? "flex" : "none", md: "block" }}
         mt={{ base: 4, md: 0 }}
       >
-        <IconButton icon={useColorModeValue(<MoonIcon />, <SunIcon />)} bg="transparent"
-          onClick={toggleColorMode} />
+        <IconButton icon={currentTheme === 'light' ? <Show /> : <Hide />} bg="transparent"
+          onClick={() => {
+            setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light')
+          }} />
       </Box>
     </Flex>
   );

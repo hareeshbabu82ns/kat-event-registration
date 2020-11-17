@@ -1,24 +1,22 @@
 import React, { useState } from 'react'
+import { useStyletron } from 'baseui';
+
+import { FormControl } from "baseui/form-control";
+import { Input } from "baseui/input";
+import { Select } from 'baseui/select';
+import { RadioGroup, Radio, ALIGN } from "baseui/radio";
+import { Textarea } from "baseui/textarea";
+import { Checkbox, LABEL_PLACEMENT } from "baseui/checkbox";
+import { Button, KIND } from "baseui/button";
+
+import { DatePicker } from 'baseui/datepicker';
+import { TimePicker } from 'baseui/timepicker';
+
 import {
-  Button,
-  Checkbox,
-  FormLabel,
-  FormControl,
-  Input,
-  Radio,
-  RadioGroup,
-  Select,
-  Textarea,
-  HStack,
   Stack,
   useToast,
 } from '@chakra-ui/react'
-// import { useColorMode } from '@chakra-ui/react'
 import { useForm, Controller } from 'react-hook-form'
-// import DropdownSelect from './components/DropdownSelect'
-// import ComboboxSelect from './components/ComboboxSelect'
-import ReactSelect from '../components/ReactSelect'
-import ReactDatePicker from '../components/ReactDatePicker'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
@@ -32,21 +30,26 @@ const options = [
 const schema = yup.object().shape({
   firstName: yup.string().required().min(5),
   dob: yup.date().required(),
-  genderRSelect: yup.object({
-    key: yup.string().required(),
-    value: yup.string().required(),
-  }).required(),
+  // genderRSelect: yup.object({
+  //   key: yup.string().required(),
+  //   value: yup.string().required(),
+  // }).required(),
+  gender: yup.array().required(),
 });
 
 const FormExampleFieldControl = () => {
   const toast = useToast()
+  const [css, theme] = useStyletron()
+
   const defaultValues = {
-    firstName: 'test',
-    gender: 'other',
-    // genderRSelect: options[2],
-    genderRSelect: '',
+    firstName: 'tests',
+    // gender: 'other',
+    gender: [options[2]],
+    // genderRSelect: '',
     dob: new Date(),
-    legend: '1',
+    legend: '2',
+    agree: true,
+    about: 'test',
   }
   const { register, control, handleSubmit, errors } = useForm({
     defaultValues,
@@ -55,14 +58,14 @@ const FormExampleFieldControl = () => {
 
   React.useEffect(() => {
     if (errors) {
-      toast.closeAll()
-      Object.keys(errors).forEach((errField) => {
-        const err = errors[errField]
-        toast({
-          description: err.message,
-          status: 'error'
-        })
-      })
+      // toast.closeAll()
+      // Object.keys(errors).forEach((errField) => {
+      //   const err = errors[errField]
+      //   toast({
+      //     description: err.message,
+      //     status: 'error'
+      //   })
+      // })
     }
 
     console.log(errors)
@@ -74,89 +77,150 @@ const FormExampleFieldControl = () => {
       onSubmit={handleSubmit(onSubmit)}>
 
       <Stack direction={{ base: "column", md: "row" }} spacing="2">
-        <FormControl id="firstName" isRequired
-          isInvalid={errors.firstName}>
-          <FormLabel>First name</FormLabel>
-          <Input type="text" placeholder='First name'
-            name='firstName' ref={register} />
+        <FormControl id="firstName"
+          error={errors?.firstName?.message}
+          label={() => 'First Name'}>
+          <Input placeholder='First name'
+            name='firstName' inputRef={register} />
         </FormControl>
 
-        <FormControl id="lastName">
-          <FormLabel>Last Name</FormLabel>
-          <Input type="text" placeholder='Last name'
-            name='lastName' ref={register} />
+        <FormControl id="lastName"
+          error={errors?.lastName?.message}
+          label={() => 'Last Name'}>
+          <Input placeholder='Last name'
+            name='lastName' inputRef={register} />
         </FormControl>
 
-        <FormControl id="gender" >
-          <FormLabel>Gender</FormLabel>
-          <Select placeholder='Select Gender...'
-            name='gender' ref={register}>
-            {options && options.map(option =>
-              (<option key={option.key} value={option.value}>{option.label}</option>))}
-          </Select>
+        <FormControl id="gender"
+          error={errors?.gender?.message}
+          label={() => 'Gender'}>
+          <Controller
+            name="gender" control={control}
+            render={({ onChange, value }) => (
+              <Select
+                value={value}
+                error={errors?.gender?.message}
+                onChange={({ value }) => onChange(value)}
+                options={options}
+                labelKey='label' valueKey='value'
+              />
+            )}
+          />
         </FormControl>
       </Stack>
       <Stack direction={{ base: "column", md: "row" }} spacing="2">
-        <FormControl id="genderRSelect"
-          isInvalid={errors.genderRSelect}>
-          <FormLabel>Gender</FormLabel>
-          <Controller as={ReactSelect} options={options}
-            defaultValue={defaultValues.genderRSelect}
-            isInvalid={errors.genderRSelect}
-            name='genderRSelect' control={control} />
-        </FormControl>
-        <FormControl id="dob">
-          <FormLabel>Date Of Birth</FormLabel>
+        <FormControl id="dob" label="Date of Birth">
           <Controller
             name="dob" control={control}
             render={({ onChange, value }) => (
-              <ReactDatePicker
-                defaultValue={defaultValues.dob}
-                selected={value}
-                showTimeSelect
-                dateFormat="MM/dd/yyyy HH:mm"
+              <DatePicker
+                value={value}
+                timeSelectStart
+                formatString="MM/dd/yyyy HH:mm"
+                onChange={({ date }) => onChange(date)}
+                overrides={{
+                  CalendarHeader: {
+                    style: ({ $theme }) => ({
+                      backgroundColor: $theme.colors.positive,
+                    })
+                  },
+                  MonthHeader: {
+                    style: ({ $theme }) => ({
+                      backgroundColor: $theme.colors.positive,
+                    }),
+                  },
+                  MonthYearSelectButton: {
+                    style: ({ $theme }) => ({
+                      ':focus': {
+                        backgroundColor: $theme.colors.positive500,
+                        outline: 'none',
+                      },
+                    }),
+                  },
+                  Day: {
+                    style: ({
+                      $theme,
+                      $selected,
+                      $isHovered,
+                      $isHighlighted,
+                    }) => ({
+                      color: $selected
+                        ? $theme.colors.white
+                        : $theme.colors.calendarForeground,
+                      ':after': {
+                        backgroundColor: $selected
+                          ? $isHovered || $isHighlighted
+                            ? $theme.colors.positive500
+                            : $theme.colors.positive
+                          : $isHovered || $isHighlighted
+                            ? $theme.colors.positive200
+                            : 'transparent',
+                      },
+                    }),
+                  },
+                }}
+              />
+            )}
+          />
+        </FormControl>
+        <FormControl id="dob" label="Date of Birth">
+          <Controller
+            name="dob" control={control}
+            render={({ onChange, value }) => (
+              <TimePicker
+                value={value}
+                format="HH:mm"
                 onChange={onChange}
-                inputOptions={{
-                  as: 'button',
-                  w: 'full',
-                  variant: 'outline',
-                  colorScheme: "teal",
-                  inInvalid: errors.genderRSelect
-                  // borderColor: errors.genderRSelect ? 'red.500' : 'inherit',
-                }} />
+              />
             )}
           />
         </FormControl>
       </Stack>
 
-      <FormControl as='fieldset'>
-        <HStack>
-          <FormLabel as='legend'>Quantity</FormLabel>
-          <RadioGroup
-            defaultValue={defaultValues.legend}
-          >
-            <HStack spacing="24px">
-              <Radio value="1" name='legend' ref={register}>One</Radio>
-              <Radio value="2" name='legend' ref={register}>Two</Radio>
-              <Radio value="3" name='legend' ref={register}>Three</Radio>
-            </HStack>
-          </RadioGroup>
-        </HStack>
+      <FormControl id='legend' label="Legends">
+        <Controller
+          name="legend" control={control}
+          render={({ onChange, value }) => (
+            <RadioGroup
+              value={value}
+              onChange={e => onChange(e.target.value)}
+              align={ALIGN.horizontal}
+            >
+              <Radio value="1">One</Radio>
+              <Radio value="2">Two</Radio>
+              <Radio value="3">Three</Radio>
+            </RadioGroup>
+          )}
+        />
       </FormControl>
 
-      <FormControl id="about">
-        <FormLabel>About</FormLabel>
-        <Textarea placeholder='Tell us more about you...'
-          name='about' ref={register}
+      <FormControl id="about" label="About">
+        <Controller
+          name='about' control={control}
+          render={({ onChange, value }) => (
+            <Textarea
+              value={value}
+              onChange={e => onChange(e.target.value)}
+              placeholder='Tell us more about you...'
+            />
+          )}
         />
       </FormControl>
 
       <FormControl id="agree" isRequired>
-        <Checkbox colorScheme='red' isRequired
-          name='agree' ref={register}>I agree to the Terms and Conditions</Checkbox>
+        <Controller
+          name='agree' control={control}
+          render={({ onChange, value }) => (
+            <Checkbox
+              checked={value}
+              onChange={e => onChange(e.target.checked)}
+              labelPlacement={LABEL_PLACEMENT.right}>
+              I agree to the Terms and Conditions</Checkbox>
+          )}
+        />
       </FormControl>
 
-      <Button type='submit' colorScheme='teal'>Submit</Button>
+      <Button kind={KIND.primary} type='submit' >Submit</Button>
 
     </Stack>
   )
