@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 
 import {
-  BaseProvider, styled,
+  BaseProvider,
   createTheme, createDarkTheme
 } from 'baseui';
 import { Client as Styletron } from 'styletron-engine-atomic';
@@ -12,6 +12,21 @@ import { Provider as StyletronProvider } from 'styletron-react';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import { themeMode } from './state/globals'
 import reportWebVitals from './reportWebVitals';
+
+import { extendTheme } from '@chakra-ui/react';
+
+const chakraDarkTheme = extendTheme({
+  config: {
+    useSystemColorMode: false,
+    initialColorMode: "dark",
+  },
+})
+const chakraLightTheme = extendTheme({
+  config: {
+    useSystemColorMode: false,
+    initialColorMode: "light",
+  },
+})
 
 const engine = new Styletron()
 
@@ -23,28 +38,50 @@ const primitives = {
   primaryFontFamily: 'Roboto',
 
 }
-const overrides = {
+const darkOverrides = {
   typography: {
     DisplayLarge: {
       fontFamily: 'Georgia',
     },
   },
+  ...chakraDarkTheme
+}
+const lightOverrides = {
+  typography: {
+    DisplayLarge: {
+      fontFamily: 'Georgia',
+    },
+  },
+  ...chakraLightTheme
 }
 
-const darkTheme = createDarkTheme(primitives, overrides);
-const lightTheme = createTheme(primitives, overrides);
+const darkTheme = createDarkTheme(primitives, darkOverrides);
+const lightTheme = createTheme(primitives, lightOverrides);
 
 const breakpoints = {
   small: 769,
   medium: 1024,
   large: 1216,
+  base: "0em",
+  lg: "62em",
+  md: "48em",
+  sm: "30em",
+  xl: "80em",
+  'break-point-0': "0em",
+  'break-point-1': "30em",
+  'break-point-2': "48em",
+  'break-point-3': "62em",
+  'break-point-4': "80em",
+  // ...chakraDarkTheme.breakpoints,
 };
 
 const ResponsiveTheme = Object.keys(breakpoints).reduce(
   (acc, key) => {
+    console.log(breakpoints[key])
+    const measure = breakpoints[key].toString().endsWith('em') ? '' : 'px'
     acc.mediaQuery[
       key
-    ] = `@media screen and (min-width: ${breakpoints[key]}px)`;
+    ] = `@media screen and (min-width: ${breakpoints[key]}${measure})`;
     return acc;
   },
   {
@@ -58,7 +95,8 @@ const AppBase = () => {
 
   const currTheme = currentTheme === THEME.light ? lightTheme : darkTheme
   const theme = { ...currTheme, ...ResponsiveTheme };
-  // console.log(theme)
+  console.log(theme)
+  // console.log(chakraDarkTheme)
 
   // set the background color of the page
   const rootEle = document.getElementsByTagName('body')[0]

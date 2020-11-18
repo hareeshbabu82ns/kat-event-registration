@@ -1,7 +1,6 @@
 import React from 'react'
 import { Block } from 'baseui/block'
 import { FlexGrid, FlexGridItem } from 'baseui/flex-grid'
-import { AspectRatioBox, AspectRatioBoxBody } from 'baseui/aspect-ratio-box'
 
 const ExAddCard = () => {
 

@@ -239,7 +239,7 @@ const FormExampleFieldControl = () => {
                 style: ({ $theme }) => {
                   return {
                     // outline: `${$theme.colors.primaryB} solid`,
-                    backgroundColor: $theme.colors.backgroundInversePrimary
+                    backgroundColor: $theme.colors.green['500']
                   };
                 }
               }
