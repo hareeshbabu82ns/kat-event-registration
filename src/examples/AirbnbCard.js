@@ -1,9 +1,9 @@
 import React from 'react'
-import {
-  Box, Image, Badge
-} from '@chakra-ui/react'
 
-import { StarIcon } from '@chakra-ui/icons'
+import { Block } from 'baseui/block'
+import { Tag, KIND, VARIANT } from 'baseui/tag'
+import { StarRating } from "baseui/rating";
+
 
 const ExAirbnbCard = () => {
   const property = {
@@ -18,57 +18,92 @@ const ExAirbnbCard = () => {
   }
 
   return (
-    <Box borderWidth='1px' borderRadius='lg' overflow='hidden' maxW='sm'>
-      <Image src={property.imageUrl} all={property.imageAlt} />
+    <Block
+      overrides={{
+        Block: {
+          style: ({ $theme }) => {
+            // console.log($theme.borders.border400)
+            return {
+              ...$theme.borders.border600,
+              borderRadius: $theme.borders.radius300,
+            }
+          }
+        }
+      }}
+      overflow='hidden' maxWidth={['100%', '30rem']}>
+      <img src={property.imageUrl} alt={property.imageAlt} />
 
-      <Box p='6'>
+      <Block padding='scale800'>
 
-        <Box d='flex' alignItems='baseline'>
-          <Badge borderRadius='full' px='2' colorScheme='teal'>New</Badge>
+        <Block display='flex' alignItems='baseline'>
+          <Tag closeable={false}
+            kind={KIND.green}
+            variant={VARIANT.solid}>New</Tag>
 
-          <Box
-            color='gray.500'
-            fontWeight='semibold'
-            letterSpacing='wide'
-            fontSize='xs'
-            textTransform='uppercase'
-            ml='2'
+          <Block
+            color='contentSecondary'
+            font='LabelSmall'
+            marginLeft='scale200'
+            overrides={{
+              Block: {
+                style: ({ $theme }) => {
+                  return {
+                    fontWeight: 'semibold',
+                    letterSpacing: 'wide',
+                    textTransform: 'uppercase',
+                  }
+                }
+              }
+            }}
           >
             {property.beds} beds &bull; {property.baths} baths
-          </Box>
-        </Box>
+          </Block>
+        </Block>
 
-        <Box
-          mt='1'
-          fontWeight='semibold'
-          as='h4'
-          lineHeight='tight'
-          isTruncated
+        <Block as='h4'
+          marginTop='scale200'
+          font='HeadingXSmall'
+          overrides={{
+            Block: {
+              style: ({ $theme }) => {
+                return {
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+
+                  fontWeight: 'semibold',
+                  lineHeight: 'tight',
+                }
+              }
+            }
+          }}
         >
           {property.title}
-        </Box>
+        </Block>
 
-        <Box>
+        <Block>
           {property.formattedPrice}
-          <Box as='span' color='gray.600' fontSize='sm'>
+          <Block as='span' color='contentTertiary'
+            font='LabelSmall'>
             / wk
-          </Box>
-        </Box>
-        <Box d='flex' mt='2' alignItems='center'>
-          {Array(5).fill('')
-            .map((_, i) => (
-              <StarIcon key={i}
-                color={i < property.rating ? 'teal.500' : 'gray.300'}
-              />
-            ))
-          }
-          <Box as='span' ml='2' color='gray.600' fontSize='sm'>
+          </Block>
+        </Block>
+        <Block display='flex' marginTop='scale400' alignItems='center'>
+          <StarRating numItems={5} value={property.rating}
+            size={18} overrides={{
+              Item: {
+                style: {
+                  marginRight: '1px'
+                }
+              }
+            }} />
+          <Block as='span' marginLeft='scale400' color='gray.600' fontSize='sm'>
             {property.reviewCount} reviews
-          </Box>
-        </Box>
-      </Box>
+          </Block>
+        </Block>
+      </Block>
 
-    </Box>
+    </Block>
   )
 }
 

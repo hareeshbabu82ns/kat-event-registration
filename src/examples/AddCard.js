@@ -1,23 +1,56 @@
 import React from 'react'
-import { Image, Box, Text, Spacer } from '@chakra-ui/react'
+import { Block } from 'baseui/block'
+import { FlexGrid, FlexGridItem } from 'baseui/flex-grid'
+import { AspectRatioBox, AspectRatioBoxBody } from 'baseui/aspect-ratio-box'
 
 const ExAddCard = () => {
 
   return (
-    <Box maxW='lg' bg='blue.800' p='1rem' d='flex' >
-      <Image
-        width='150px'
-        src="https://bit.ly/2jYM25F"
-        alt="Woman paying for a purchase"
-      />
-      <Box ml='4' d='flex' flexDir='column'>
-        <Text color='gray.200' fontSize='sm'>Ship your code to production in just a few clicks. Get $100 free credit</Text>
-        <Spacer />
-        <Text color='gray.400' fontSize='.7em'
-          textTransform='uppercase'
-        >Ads Via Carbon</Text>
-      </Box>
-    </Box>
+    <FlexGrid maxWidth={['100%', '30rem']}
+      backgroundColor='backgroundTertiary'
+      padding='.7rem'
+      flexGridColumnGap='scale800'
+      flexGridColumnCount={2}
+    >
+      <FlexGridItem overrides={{
+        Block: {
+          style: ({ $theme }) => ({
+            // width: '150px',
+            flexGrow: 0,
+          }),
+        }
+      }} >
+        <AspectRatioBox aspectRatio={250 / 200}>
+          <AspectRatioBoxBody as="img"
+            src="https://bit.ly/2jYM25F"
+            alt="Woman paying for a purchase"
+          />
+        </AspectRatioBox>
+      </FlexGridItem>
+      <FlexGridItem display='flex' flexDirection='column'
+        justifyContent='space-between'
+        overrides={{
+          Block: {
+            style: ({ $theme }) => ({
+              flexGrow: 1,
+            }),
+          }
+        }} >
+        <Block color='contentSecondary'
+          font='LabelSmall'>Ship your code to production in just a few clicks. Get $100 free credit</Block>
+        <Block
+          color='contentTertiary'
+          font='LabelXSmall'
+          overrides={{
+            Block: {
+              style: {
+                textTransform: 'uppercase',
+              }
+            },
+          }}
+        >Ads Via Carbon</Block>
+      </FlexGridItem>
+    </FlexGrid>
   )
 }
 

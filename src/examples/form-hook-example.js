@@ -75,7 +75,7 @@ const FormExampleFieldControl = () => {
         flexGridColumnGap="scale800">
         <FlexGridItem>
           <FlexGrid
-            flexGridColumnCount={[1, 1, 3]} flexGridColumnGap="scale800">
+            flexGridColumnCount={[1, 3]} flexGridColumnGap="scale800">
             <FlexGridItem>
               <FormControl id="firstName"
                 error={errors?.firstName?.message}

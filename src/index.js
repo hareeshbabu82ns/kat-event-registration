@@ -34,14 +34,40 @@ const overrides = {
 const darkTheme = createDarkTheme(primitives, overrides);
 const lightTheme = createTheme(primitives, overrides);
 
+const breakpoints = {
+  small: 769,
+  medium: 1024,
+  large: 1216,
+};
 
-const AppBase = (props) => {
+const ResponsiveTheme = Object.keys(breakpoints).reduce(
+  (acc, key) => {
+    acc.mediaQuery[
+      key
+    ] = `@media screen and (min-width: ${breakpoints[key]}px)`;
+    return acc;
+  },
+  {
+    breakpoints,
+    mediaQuery: {},
+  },
+);
+
+const AppBase = () => {
   const currentTheme = useRecoilValue(themeMode)
-  console.log(darkTheme)
+
+  const currTheme = currentTheme === THEME.light ? lightTheme : darkTheme
+  const theme = { ...currTheme, ...ResponsiveTheme };
+  console.log(theme)
+
+  // set the background color of the page
+  const rootEle = document.getElementsByTagName('body')[0]
+  rootEle.style.backgroundColor = theme.colors.backgroundSecondary
+  rootEle.style.color = theme.colors.contentPrimary
+
   return (
     <StyletronProvider value={engine}>
-      <BaseProvider
-        theme={currentTheme === THEME.light ? lightTheme : darkTheme}>
+      <BaseProvider theme={theme}>
         <App />
       </BaseProvider>
     </StyletronProvider>

@@ -1,21 +1,31 @@
+import * as React from 'react';
+import { StyledLink } from 'baseui/link';
 import { useStyletron } from 'baseui';
 
-const fallbackId = "chakra-skip-nav"
-const SkipNavContent = (props) => {
-  const [css, theme] = useStyletron();
-
-  const { id = fallbackId, ...rest } = props
+const SkipToContent = () => {
+  const [, theme] = useStyletron();
   return (
-    <div
-      id={id}
-      tabIndex={-1}
-      style={{ outline: 0 }}
-      {...rest}
-      className={css({
-        outline: 0,
-      })}
-    />
-  )
-}
+    <StyledLink
+      href="#docSearch-content"
+      $style={{
+        top: '-80px',
+        left: theme.sizing.scale600,
+        position: 'fixed',
+        paddingTop: theme.sizing.scale600,
+        paddingBottom: theme.sizing.scale600,
+        paddingLeft: theme.sizing.scale1000,
+        paddingRight: theme.sizing.scale1000,
+        backgroundColor: theme.colors.backgroundSecondary,
+        ':focus': {
+          top: theme.sizing.scale600,
+          outlineOffset: '-3px',
+          transition: `top ${theme.animation.timing200} ${theme.animation.easeInCurve} 0ms`,
+        },
+      }}
+    >
+      Skip to content
+    </StyledLink>
+  );
+};
 
-export default SkipNavContent
+export default SkipToContent;

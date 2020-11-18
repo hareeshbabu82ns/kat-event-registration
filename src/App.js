@@ -1,4 +1,3 @@
-import { Box } from "@chakra-ui/react"
 
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
@@ -8,16 +7,15 @@ import NavBar, { NAV_BAR_HEIGHT } from './NavBar'
 import FormExample from './examples/form-hook-example'
 import ExAddCard from './examples/AddCard'
 import ExAirbnbCard from './examples/AirbnbCard'
+import PasswordGen from './examples/password-generator'
+import SkipToContent from './utils/SkipNavContent'
 
 function App() {
   const [css, theme] = useStyletron();
 
   return (
-    <Block
-      backgroundColor="backgroundPrimary"
-      color="contentPrimary"
-      height="100%"
-    >
+    <>
+      <SkipToContent />
       <NavBar />
       <FlexGrid
         padding='scale600'
@@ -31,7 +29,10 @@ function App() {
             }),
           },
         }}>
+          <PasswordGen />
+          <Block height='scale800' />
           <ExAddCard />
+          <Block height='scale800' />
           <ExAirbnbCard />
         </FlexGridItem>
         <FlexGridItem overrides={{
@@ -46,7 +47,7 @@ function App() {
           </Block>
         </FlexGridItem>
       </FlexGrid>
-    </Block>
+    </>
   );
 }
 
