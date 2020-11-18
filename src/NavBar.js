@@ -43,22 +43,9 @@ const CAppNavBar = ({ display }) => {
     }
   ]);
   return (
-    <Block display={display}
-      height={NAV_BAR_HEIGHT} alignItems='center'
-      overrides={{
-        Block: {
-          style: ({ $theme }) => {
-            return {
-              outline: `${$theme.colors.warning600} solid`,
-              backgroundColor: $theme.colors.backgroundTertiary,
-              boxShadow: 0
-            };
-          }
-        },
-      }}
-    >
+    <Block display={display}>
       <AppNavBar
-        title="Title"
+        title="BaseUI"
         mainItems={mainItems}
         onMainItemSelect={item => {
           setMainItems(prev => setItemActive(prev, item));
@@ -74,10 +61,18 @@ const CAppNavBar = ({ display }) => {
           Root: {
             style: ({ $theme }) => {
               return {
+                outline: `${$theme.colors.warning600} solid`,
                 backgroundColor: $theme.colors.backgroundTertiary,
               };
             }
           },
+          Spacing: {
+            style: ({ $theme }) => {
+              return {
+                height: NAV_BAR_HEIGHT
+              };
+            }
+          }
         }}
       />
     </Block>
@@ -103,7 +98,7 @@ function NavBar({ display }) {
         }}
       >
         <StyledNavigationList $align={ALIGN.left}>
-          <StyledNavigationItem><h3 className={css({ color: 'teal' })}>UberUI</h3></StyledNavigationItem>
+          <StyledNavigationItem><h3 className={css({ color: 'teal' })}>BaseUI</h3></StyledNavigationItem>
         </StyledNavigationList>
 
         <StyledNavigationList $align={ALIGN.left}>

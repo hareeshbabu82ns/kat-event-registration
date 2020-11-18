@@ -58,7 +58,7 @@ const AppBase = () => {
 
   const currTheme = currentTheme === THEME.light ? lightTheme : darkTheme
   const theme = { ...currTheme, ...ResponsiveTheme };
-  console.log(theme)
+  // console.log(theme)
 
   // set the background color of the page
   const rootEle = document.getElementsByTagName('body')[0]

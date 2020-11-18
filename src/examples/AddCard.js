@@ -15,17 +15,15 @@ const ExAddCard = () => {
       <FlexGridItem overrides={{
         Block: {
           style: ({ $theme }) => ({
-            // width: '150px',
+            width: '13rem',
             flexGrow: 0,
           }),
         }
       }} >
-        <AspectRatioBox aspectRatio={250 / 200}>
-          <AspectRatioBoxBody as="img"
-            src="https://bit.ly/2jYM25F"
-            alt="Woman paying for a purchase"
-          />
-        </AspectRatioBox>
+        <img
+          src="https://bit.ly/2jYM25F"
+          alt="Woman paying for a purchase"
+        />
       </FlexGridItem>
       <FlexGridItem display='flex' flexDirection='column'
         justifyContent='space-between'
