@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { log } from './utils/logger'
 
 import {
   BaseProvider,
@@ -44,7 +45,8 @@ const darkOverrides = {
       fontFamily: 'Georgia',
     },
   },
-  ...chakraDarkTheme
+  ...chakraDarkTheme,
+  themeName: 'dark',
 }
 const lightOverrides = {
   typography: {
@@ -52,7 +54,8 @@ const lightOverrides = {
       fontFamily: 'Georgia',
     },
   },
-  ...chakraLightTheme
+  ...chakraLightTheme,
+  themeName: 'light',
 }
 
 const darkTheme = createDarkTheme(primitives, darkOverrides);
@@ -77,7 +80,6 @@ const breakpoints = {
 
 const ResponsiveTheme = Object.keys(breakpoints).reduce(
   (acc, key) => {
-    console.log(breakpoints[key])
     const measure = breakpoints[key].toString().endsWith('em') ? '' : 'px'
     acc.mediaQuery[
       key
@@ -95,7 +97,7 @@ const AppBase = () => {
 
   const currTheme = currentTheme === THEME.light ? lightTheme : darkTheme
   const theme = { ...currTheme, ...ResponsiveTheme };
-  console.log(theme)
+  log({ data: theme })
   // console.log(chakraDarkTheme)
 
   // set the background color of the page

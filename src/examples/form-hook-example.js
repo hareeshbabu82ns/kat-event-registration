@@ -64,7 +64,7 @@ const FormExampleFieldControl = () => {
       // })
     }
 
-    console.log(errors)
+    // console.log(errors)
   }, [errors])
   const onSubmit = (data) => { console.log(data); }
 
