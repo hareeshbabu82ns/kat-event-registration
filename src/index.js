@@ -97,7 +97,7 @@ const AppBase = () => {
 
   const currTheme = currentTheme === THEME.light ? lightTheme : darkTheme
   const theme = { ...currTheme, ...ResponsiveTheme };
-  log({ data: theme })
+  log({ key: 'baseui theme', data: theme })
   // console.log(chakraDarkTheme)
 
   // set the background color of the page
